@@ -1,7 +1,3 @@
-from dotenv import load_dotenv
-
-load_dotenv()
-
 from agents import (
     gen_related_topics,
     gen_outline,

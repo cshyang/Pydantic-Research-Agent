@@ -3,7 +3,7 @@ from prompts import ARTICLE_GENERATOR_PROMPT
 from pydantic_ai import Tool
 from .base import create_agent
 from state import ResearchContext
-from .section_drafter import get_section_context
+from .agent_section_drafter import get_section_context
 
 
 gen_article_agent = create_agent(
