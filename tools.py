@@ -1,13 +1,11 @@
 from search_tools import TavilySearch
 from langchain_community.retrievers import WikipediaRetriever
 from typing import List
-from state import ResearchContext
 
 
-async def tavily_search(research_context: ResearchContext):
+async def tavily_search(queries: List[str]):
     tavily_search = TavilySearch()
-    search_results = await tavily_search.abatch_search(research_context.related_topics)
-    research_context.add_search_result(search_results)
+    search_results = await tavily_search.abatch_search(queries)
     search_results_str = TavilySearch.results_to_str(search_results)
     return search_results_str
 

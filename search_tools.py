@@ -1,5 +1,6 @@
 from tavily import AsyncTavilyClient
 from dotenv import load_dotenv
+from config import MAX_SEARCH_RESULT
 import os
 
 load_dotenv()
@@ -8,7 +9,7 @@ load_dotenv()
 class TavilySearch:
     """Inititate Tavily Search Client"""
 
-    def __init__(self, max_results: int = 3):
+    def __init__(self, max_results: int = MAX_SEARCH_RESULT):
         TAVILY_API_KEY = os.getenv("TAVILY_API_KEY", "API Key Not Found")
         self.tavily_client = AsyncTavilyClient(api_key=TAVILY_API_KEY)
         self.max_results = max_results
