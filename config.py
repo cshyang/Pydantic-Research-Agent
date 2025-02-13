@@ -1,4 +1,5 @@
 """Configuration management for the research agent."""
+
 from pathlib import Path
 from dotenv import load_dotenv
 import os
@@ -22,3 +23,15 @@ if not OPENAI_API_KEY:
     raise ValueError("OPENAI_API_KEY environment variable is not set")
 if not TAVILY_API_KEY:
     raise ValueError("TAVILY_API_KEY environment variable is not set")
+
+# Initial Outline Config:
+MAX_TOPIC_EXPLORATION = 3
+
+# Conversation config:
+CONVERSATION_LOOP = 2
+NUM_PERSONAS = 3
+MAX_PERSONA_QUESTIONS = 3
+MAX_SEARCH_RESULT = 3
+
+# Article Draft Config:
+MAX_CHAR_LIMIT = 2000
