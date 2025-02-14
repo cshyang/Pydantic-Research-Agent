@@ -3,9 +3,9 @@ from langchain_community.retrievers import WikipediaRetriever
 from typing import List
 
 
-async def tavily_search(queries: List[str]):
+async def tavily_search(queries: List[str], verbose: bool = False, callback=None):
     tavily_search = TavilySearch()
-    search_results = await tavily_search.abatch_search(queries)
+    search_results = await tavily_search.abatch_search(queries, verbose=verbose, callback=callback)
     search_results_str = TavilySearch.results_to_str(search_results)
     return search_results_str
 

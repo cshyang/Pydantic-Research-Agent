@@ -1,8 +1,9 @@
 from pydantic_ai import RunContext
-from pydantic_output import Section
+from pydantic_output import Section, OutlineDraft
 from state import ResearchContext
 from prompts import SECTION_DRAFTER_PROMPT
 from .base import create_agent
+from .agent_outline_gen import gen_outline
 from config import MAX_CHAR_LIMIT
 
 section_draft_agent = create_agent(
@@ -40,21 +41,37 @@ Expert Perspectives and Discussions:
 """
 
 
-async def gen_section_drafts(research_context: ResearchContext):
-    """Generate drafts for all sections in the outline."""
-    if not research_context.has_outline:
-        raise ValueError("No outline available")
+async def gen_section_drafts(research_context: ResearchContext, progress_callback=None):
+    """Generate drafts for each section in the outline."""
+    if not research_context.current_outline:
+        await gen_outline(research_context)
 
-    outline = research_context.current_outline
+    if progress_callback:
+        progress_callback("Starting to draft sections...")
 
-    for section in outline.sections:
-        # Generate draft for main section
+    # Create an OutlineDraft object
+    outline_draft = OutlineDraft(title=research_context.current_outline.title)
+
+    # Generate drafts for each section
+    for section in research_context.current_outline.sections:
+        if progress_callback:
+            progress_callback(f"Drafting section: {section.title}")
+        
+        # Generate draft for this section
         draft = await section_draft_agent.run(
             f"""Write content for '{section.title}' and its subsections:\n
             {", ".join(sub.title for sub in section.subtitles)}
 """,
             deps=research_context,
         )
-        research_context.update_draft(draft.data)
+        
+        # Add the draft to our OutlineDraft object
+        outline_draft.add_draft(draft.data)
+        
+        if progress_callback:
+            progress_callback(f"Section complete: {section.title}")
+
+    # Update research context with the outline draft
+    research_context.current_drafts = outline_draft
 
     return research_context.current_drafts

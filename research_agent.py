@@ -21,6 +21,7 @@ async def run_multi_persona_conversation(
     research_context: ResearchContext,
     num_rounds: int = CONVERSATION_LOOP,
     verbose: bool = False,
+    progress_callback=None,
 ):
     # Initialize conversation state for managing personas
     conv_state = ConversationState(topic=research_context.main_topic)
@@ -33,12 +34,20 @@ async def run_multi_persona_conversation(
 
     # Iterate through each persona for questions
     for persona in personas:
-        print(f"Research topic based on the perspective: {persona.role}")
+        if progress_callback:
+            progress_callback(
+                f"Research topic based on the perspective: {persona.role}"
+            )
+
         for round_num in range(num_rounds):
             persona_state = conv_state.get_persona_state(persona.role)
 
             # Generate question for current persona
             persona_question = await gen_questions(conv_state, message_history)
+            if progress_callback:
+                progress_callback(
+                    f"Question from {persona.role}: {persona_question.data.question}"
+                )
 
             # Update persona state
             persona_state.current_question = persona_question.data
@@ -46,9 +55,16 @@ async def run_multi_persona_conversation(
 
             # Search and get results
             queries = persona_question.data.queries
-            conv_state.search_results = await tavily_search(queries)
+            if progress_callback:
+                progress_callback(f"Searching for: {', '.join(queries)}")
+            conv_state.search_results = await tavily_search(
+                queries, verbose=False, callback=progress_callback
+            )
+            if progress_callback and conv_state.search_results:
+                for result in conv_state.search_results[:3]:  # Pass top 3 results
+                    progress_callback(result)
 
-            # Create conversation entries
+            # Create question entry and update history
             question_entry = to_chat_message(
                 persona_question.new_messages(), role=persona.role
             )
@@ -58,6 +74,8 @@ async def run_multi_persona_conversation(
             editor_answer = await gen_answer(
                 conv_state, message_history, persona_question.data
             )
+            if progress_callback:
+                progress_callback(f"Answer: {editor_answer.data}")
 
             # Create answer entry and update history
             answer_entry = to_chat_message(editor_answer.new_messages(), role="editor")
@@ -71,11 +89,6 @@ async def run_multi_persona_conversation(
             research_context.update_conversation_history(
                 [question_entry, answer_entry], persona.role
             )
-            if verbose:
-                print(f"Round {round_num + 1}, Persona: {persona.role}")
-                print(f"Question: {persona_question.data.question}\n")
-                print(f"Answer: {editor_answer.data}\n")
-                print("-" * 80 + "\n")
 
         # Update the outline using only this persona's conversation
         await gen_outline(research_context)
@@ -103,9 +116,14 @@ async def main():
 
     # Step 4: Research based on different perspectives
     console.print("\n[bold]Generating conversation with personas...[/bold]")
+
+    def progress_callback(message):
+        console.print(message)
+
     await run_multi_persona_conversation(
         research_context=research_context,
         num_rounds=2,  # or any number you prefer
+        progress_callback=progress_callback,
     )
 
     # Step 5: Update outline based on conversation from different perspectives
@@ -113,7 +131,11 @@ async def main():
 
     # Step 6: Generate section drafts
     console.print("\n[bold]Generating section drafts...[/bold]")
-    await gen_section_drafts(research_context)
+
+    def progress_callback(message):
+        console.print(message)
+
+    await gen_section_drafts(research_context, progress_callback=progress_callback)
 
     # Step 7: Generate article
     console.print("\n[bold]Generating article...[/bold]")
