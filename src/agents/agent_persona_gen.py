@@ -1,7 +1,7 @@
-from pydantic_output import Perspectives
-from prompts import PERSONA_GENERATOR_PROMPT
+from src.core.pydantic_models import Perspectives
+from src.core.prompts import PERSONA_GENERATOR_PROMPT
 from .base import create_agent
-from state import ResearchContext
+from src.core.state import ResearchContext
 
 
 async def gen_personas(research_context: ResearchContext):

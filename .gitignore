@@ -3,6 +3,11 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
 # C extensions
 *.so
 
@@ -169,3 +174,8 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# UV
+.uv/
+.venv/
+requirements.lock

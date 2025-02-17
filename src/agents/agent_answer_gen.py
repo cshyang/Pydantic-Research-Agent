@@ -1,5 +1,5 @@
 from .base import create_agent
-from state import ConversationState
+from src.core.state import ConversationState
 from pydantic_ai import RunContext
 
 

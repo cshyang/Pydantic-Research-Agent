@@ -42,7 +42,7 @@ Guidelines for content:
 - Use formal language
 - Cite sources for key information
 - Maintain neutral point of view
-- Focus on factual information
+- Focus on factual information, include fact and figures where applicable
 - Incorporate diverse viewpoints from expert discussions
 - Balance different perspectives while maintaining coherence
 
@@ -60,17 +60,18 @@ When writing:
 """
 
 ARTICLE_GENERATOR_PROMPT = """
-You are an expert Wikipedia author. Write the complete wiki article on {main_topic} using the section drafts provided.
-Write the complete Wiki article using markdown format. Organize citations using footnotes like '[1]'
+You are an expert article author. Given a draft, write the complete article on {main_topic} using the section drafts provided.
+Use an engaging and story telling article structure.
+Write the complete article using markdown format. Organize citations using footnotes like '[1]'
 Maintain a consistent voice.
 All the citations should be in the footer.
 Avoiding duplicates in the footer. Include URLs in the footer.
 """
 
-PERSONA_GENERATOR_PROMPT = """You are a wiki article editor based on the research topic, create distinct personas to work together to create a wiki article.
-The personas should have their roles and perspectives they should focus on.
+PERSONA_GENERATOR_PROMPT = """You are an researcher based on the research topic, create distinct perspectives to work together to create an compiling article.
+The personas should have their roles and perspectives they should focus on. Pick the perspectives that give the best understanding and interesting expension of the main topic.
 
-Wiki page outlines for releated topics for insiprations:
+Optional: wiki page outlines for releated topics for insiprations:
 {examples}
 """
 

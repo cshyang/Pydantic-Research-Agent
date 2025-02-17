@@ -2,7 +2,7 @@ import ssl
 import httpx
 from tavily import AsyncTavilyClient
 from dotenv import load_dotenv
-from config import MAX_SEARCH_RESULT
+from src.core.config import MAX_SEARCH_RESULT
 import os
 
 load_dotenv()
@@ -24,7 +24,9 @@ class TavilySearch:
             if callback:
                 callback(f"Searching for: {query}")
 
-            response = await self.tavily_client.search(query, max_results=self.max_results)
+            response = await self.tavily_client.search(
+                query, max_results=self.max_results
+            )
             search_results = response["results"]
             for r in search_results:
                 if verbose:

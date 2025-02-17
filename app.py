@@ -7,7 +7,7 @@ from research_agent import (
     run_multi_persona_conversation,
     gen_section_drafts,
 )
-from config import CONVERSATION_LOOP
+from src.core.config import CONVERSATION_LOOP, NUM_PERSONAS
 
 # Initialize Streamlit app
 st.set_page_config(page_title="𖡎 BrainSTORM AI Writer", page_icon="📚", layout="wide")
@@ -64,7 +64,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-st.title("AI Research Assistant")
+st.title("𖡎 BrainSTORM Research Writer")
 st.markdown("""
 This tool helps you research any topic using multiple AI personas to gather diverse perspectives.
 Each persona will ask questions and provide insights based on their unique viewpoint.
@@ -136,7 +136,14 @@ elif st.session_state.current_step == 3:
     progress_bar = st.empty()
 
     if not st.session_state.conversation_complete:
-        with st.spinner("Brainforming with different perspectives..."):
+        with st.spinner("Brainstorming with different perspectives..."):
+            # Reset conversation state
+            st.session_state.full_conversation_history = []
+            st.session_state.conversation_messages = []
+            st.session_state.current_persona = None
+            st.session_state.persona_count = 0
+            st.session_state.current_sources = []
+
             # Function to update progress
             def update_progress(message):
                 # Store all messages in full history
@@ -149,9 +156,11 @@ elif st.session_state.current_step == 3:
                         st.session_state.current_persona = message.split(": ")[1]
                         st.session_state.persona_count += 1
                         status_placeholder.markdown(
-                            f"🤖 **Current Persona ({st.session_state.persona_count}/3):** _{st.session_state.current_persona}_"
+                            f"🤖 **Current Persona ({st.session_state.persona_count}/{NUM_PERSONAS}):** _{st.session_state.current_persona}_"
                         )
-                        progress_bar.progress(st.session_state.persona_count / 3)
+                        progress_bar.progress(
+                            st.session_state.persona_count / NUM_PERSONAS
+                        )
 
                     # Show current question in a styled container
                     elif message.startswith("Question from"):

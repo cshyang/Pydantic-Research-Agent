@@ -1,11 +1,14 @@
-from search_tools import TavilySearch
+from src.tools.tavily import TavilySearch
 from langchain_community.retrievers import WikipediaRetriever
+from src.core.config import MAX_SEARCH_RESULT
 from typing import List
 
 
 async def tavily_search(queries: List[str], verbose: bool = False, callback=None):
-    tavily_search = TavilySearch()
-    search_results = await tavily_search.abatch_search(queries, verbose=verbose, callback=callback)
+    tavily_search = TavilySearch(max_results=MAX_SEARCH_RESULT)
+    search_results = await tavily_search.abatch_search(
+        queries, verbose=verbose, callback=callback
+    )
     search_results_str = TavilySearch.results_to_str(search_results)
     return search_results_str
 

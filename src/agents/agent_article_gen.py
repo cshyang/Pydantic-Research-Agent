@@ -1,8 +1,7 @@
-from pydantic_output import Article
-from prompts import ARTICLE_GENERATOR_PROMPT
-from pydantic_ai import Tool
+from src.core.pydantic_models import Article
+from src.core.prompts import ARTICLE_GENERATOR_PROMPT
 from .base import create_agent
-from state import ResearchContext
+from src.core.state import ResearchContext
 
 
 gen_article_agent = create_agent(
