@@ -1,4 +1,7 @@
-from agents import (
+from rich.prompt import Prompt
+from rich.console import Console
+from rich.markdown import Markdown
+from src.agents import (
     gen_related_topics,
     gen_outline,
     gen_section_drafts,
@@ -7,13 +10,10 @@ from agents import (
     gen_questions,
     gen_answer,
 )
-from tools import tavily_search
-from rich.prompt import Prompt
-from rich.console import Console
-from rich.markdown import Markdown
-from state import ResearchContext, ConversationState
-from helper import to_chat_message
-from config import CONVERSATION_LOOP
+from src.tools.search_tools import tavily_search
+from src.core.state import ResearchContext, ConversationState
+from src.utils.helper import to_chat_message
+from src.core.config import CONVERSATION_LOOP
 import asyncio
 
 

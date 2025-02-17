@@ -1,7 +1,7 @@
-from pydantic_output import RelatedTopics
-from prompts import TOPIC_EXPLORER_PROMPT
+from src.core.pydantic_models import RelatedTopics
+from src.core.prompts import TOPIC_EXPLORER_PROMPT
 from .base import create_agent
-from config import FAST_MODEL
+from src.core.config import FAST_MODEL
 
 topic_explorer_agent = create_agent(
     model=FAST_MODEL,

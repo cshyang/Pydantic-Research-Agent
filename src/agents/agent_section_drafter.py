@@ -1,10 +1,10 @@
 from pydantic_ai import RunContext
-from pydantic_output import Section, OutlineDraft
-from state import ResearchContext
-from prompts import SECTION_DRAFTER_PROMPT
+from src.core.pydantic_models import Section, OutlineDraft
+from src.core.state import ResearchContext
+from src.core.config import MAX_CHAR_LIMIT
+from src.core.prompts import SECTION_DRAFTER_PROMPT
 from .base import create_agent
 from .agent_outline_gen import gen_outline
-from config import MAX_CHAR_LIMIT
 
 section_draft_agent = create_agent(
     "openai:gpt-4o",
@@ -56,7 +56,7 @@ async def gen_section_drafts(research_context: ResearchContext, progress_callbac
     for section in research_context.current_outline.sections:
         if progress_callback:
             progress_callback(f"Drafting section: {section.title}")
-        
+
         # Generate draft for this section
         draft = await section_draft_agent.run(
             f"""Write content for '{section.title}' and its subsections:\n
@@ -64,10 +64,10 @@ async def gen_section_drafts(research_context: ResearchContext, progress_callbac
 """,
             deps=research_context,
         )
-        
+
         # Add the draft to our OutlineDraft object
         outline_draft.add_draft(draft.data)
-        
+
         if progress_callback:
             progress_callback(f"Section complete: {section.title}")
 

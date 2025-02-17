@@ -1,6 +1,6 @@
 from typing import Dict, List, Optional, Any
 from pydantic import BaseModel, Field
-from pydantic_output import (
+from .pydantic_models import (
     Section,
     Outline,
     OutlineDraft,

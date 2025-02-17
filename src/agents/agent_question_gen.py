@@ -1,7 +1,7 @@
-from pydantic_output import InterviewQuestion
-from prompts import QUESTION_GENERATOR_PROMPT
+from src.core.pydantic_models import InterviewQuestion
+from src.core.prompts import QUESTION_GENERATOR_PROMPT
 from .base import create_agent
-from state import ConversationState
+from src.core.state import ConversationState
 from pydantic_ai import RunContext
 
 

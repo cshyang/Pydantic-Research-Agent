@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import os
 
 # Get the project root directory
-ROOT_DIR = Path(__file__).parent
+ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 
 # Load environment variables at module import time
 load_dotenv(ROOT_DIR / ".env")

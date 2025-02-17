@@ -1,12 +1,13 @@
 from pydantic_ai import RunContext
-from pydantic_output import Outline
-from state import ResearchContext
-from tools import wiki_research
-from prompts import OUTLINE_GENERATOR_PROMPT
+from src.core.pydantic_models import Outline
+from src.core.state import ResearchContext
+from src.tools.search_tools import wiki_research
+from src.core.prompts import OUTLINE_GENERATOR_PROMPT
 from .base import create_agent
+from src.core.config import DEFAULT_MODEL
 
 gen_outline_agent = create_agent(
-    "openai:gpt-4o",
+    DEFAULT_MODEL,
     result_type=Outline,
     deps_type=ResearchContext,
     system_prompt=OUTLINE_GENERATOR_PROMPT,

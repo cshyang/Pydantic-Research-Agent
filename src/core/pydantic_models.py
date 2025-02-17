@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 from typing import List, Optional, Dict
-from config import MAX_PERSONA_QUESTIONS, NUM_PERSONAS, MAX_TOPIC_EXPLORATION
+from .config import MAX_PERSONA_QUESTIONS, NUM_PERSONAS, MAX_TOPIC_EXPLORATION
 
 
 class RelatedTopics(BaseModel):
