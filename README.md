@@ -1,5 +1,7 @@
 # 𖡎 BrainSTORM Research Writer
 
+![alt text](image.png)
+
 BrainSTORM is an AI-powered research assistant that leverages multiple AI personas to provide comprehensive, multi-perspective research on any topic. Using advanced language models and a multi-agent system, it generates well-rounded, thoroughly researched articles by simulating diverse viewpoints and expertise.
 
 ## 🏛️ Inspired By STORM
